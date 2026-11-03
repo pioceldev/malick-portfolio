@@ -3,6 +3,8 @@
   'use strict';
 
   const doc = document;
+  // Sous-dossier d'installation ('' si le site est à la racine du domaine).
+  const BASE = window.APP_BASE || '';
 
   /* --------------------------- Menu mobile ---------------------------- */
   const burger = doc.getElementById('admin-burger');
@@ -76,7 +78,7 @@
       const button = doc.createElement('button');
       button.type = 'button';
       button.className = 'modal__item';
-      button.innerHTML = `<img src="/uploads/${encodeURIComponent(item.filename)}" alt="${item.alt || ''}" loading="lazy"><span>${item.filename}</span>`;
+      button.innerHTML = `<img src="${BASE}/uploads/${encodeURIComponent(item.filename)}" alt="${item.alt || ''}" loading="lazy"><span>${item.filename}</span>`;
       button.addEventListener('click', () => selectMedia(item.filename));
       wrapper.appendChild(button);
     });
@@ -91,7 +93,7 @@
       const input = doc.querySelector(`[data-media-value="${pickerTarget}"]`);
       if (input) input.value = filename;
       const preview = doc.querySelector(`[data-preview-for="${pickerTarget}"]`);
-      if (preview) preview.innerHTML = `<img src="/uploads/${encodeURIComponent(filename)}" alt="">`;
+      if (preview) preview.innerHTML = `<img src="${BASE}/uploads/${encodeURIComponent(filename)}" alt="">`;
     }
     closeModal();
   };
@@ -104,7 +106,7 @@
     grid.innerHTML = '<p class="muted">Chargement…</p>';
     try {
       if (!cache) {
-        const response = await fetch('/admin/api-media.php', { headers: { Accept: 'application/json' } });
+        const response = await fetch(`${BASE}/admin/api-media.php`, { headers: { Accept: 'application/json' } });
         cache = await response.json();
       }
       renderMedia(cache);
@@ -151,7 +153,7 @@
     const list = root.querySelector('[data-gallery-list]');
     const li = doc.createElement('li');
     li.dataset.file = filename;
-    li.innerHTML = `<img src="/uploads/${encodeURIComponent(filename)}" alt=""><button type="button" class="gallery-input__remove" aria-label="Retirer">✕</button>`;
+    li.innerHTML = `<img src="${BASE}/uploads/${encodeURIComponent(filename)}" alt=""><button type="button" class="gallery-input__remove" aria-label="Retirer">✕</button>`;
     bindRemove(li.querySelector('button'));
     list.appendChild(li);
     syncGallery();

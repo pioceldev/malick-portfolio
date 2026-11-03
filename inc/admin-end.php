@@ -12,12 +12,13 @@
       <p class="muted">Chargement…</p>
     </div>
     <footer class="modal__foot">
-      <a href="/admin/media.php" class="btn btn--ghost">Gérer les médias</a>
+      <a href="<?= e(u('/admin/media.php')) ?>" class="btn btn--ghost">Gérer les médias</a>
       <span class="muted">Cliquez sur une image pour la sélectionner.</span>
     </footer>
   </div>
 </div>
 
-<script src="/js/admin.js" defer></script>
+<script>window.APP_BASE = <?= json_encode(base_path(), JSON_UNESCAPED_SLASHES) ?>;</script>
+<script src="<?= e(u('/js/admin.js')) ?>" defer></script>
 </body>
 </html>

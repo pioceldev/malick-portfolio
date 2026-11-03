@@ -17,6 +17,42 @@ function site_base(): string
     return rtrim($url, '/');
 }
 
+/**
+ * Chemin de base de l'application.
+ * Vide quand le site est à la racine du domaine, '/sous-dossier' quand il est
+ * installé dans un répertoire (ex. http://localhost/malick-portfolio/).
+ */
+function base_path(): string
+{
+    static $base = null;
+    if ($base !== null) {
+        return $base;
+    }
+
+    $base = '';
+    $root = str_replace('\\', '/', dirname(__DIR__));
+    $docroot = rtrim(str_replace('\\', '/', (string) ($_SERVER['DOCUMENT_ROOT'] ?? '')), '/');
+
+    if ($docroot !== '' && $root !== $docroot && str_starts_with($root . '/', $docroot . '/')) {
+        $base = rtrim(substr($root, strlen($docroot)), '/');
+    }
+
+    return $base;
+}
+
+/** URL interne tenant compte du sous-dossier d'installation. */
+function u(string $path = '/'): string
+{
+    if (preg_match('#^(https?:)?//#i', $path)) {
+        return $path;
+    }
+    $base = base_path();
+    if ($path === '' || !str_starts_with($path, '/')) {
+        $path = '/' . $path;
+    }
+    return $base . $path;
+}
+
 /** Transforme un nom de fichier média en URL publique. */
 function image_url(?string $filename, string $fallback = ''): string
 {
@@ -27,7 +63,7 @@ function image_url(?string $filename, string $fallback = ''): string
     if (preg_match('#^https?://#i', $filename)) {
         return $filename;
     }
-    return rtrim((string) cfg('uploads_url', '/uploads'), '/') . '/' . rawurlencode(basename($filename));
+    return u(rtrim((string) cfg('uploads_url', '/uploads'), '/') . '/' . rawurlencode(basename($filename)));
 }
 
 /** Texte brut → paragraphes HTML sûrs (une ligne vide = nouveau paragraphe). */
@@ -142,7 +178,8 @@ function current_path(): string
 
 function redirect(string $url): void
 {
-    header('Location: ' . $url, true, 302);
+    // Les redirections internes tiennent compte du sous-dossier d'installation.
+    header('Location: ' . u($url), true, 302);
     exit;
 }
 

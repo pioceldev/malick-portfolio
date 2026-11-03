@@ -29,7 +29,7 @@ if (!$debug) {
             . '<div style="font:15px/1.6 system-ui;padding:48px;max-width:640px;margin:0 auto">'
             . '<h1 style="font-size:22px">Une erreur est survenue.</h1>'
             . '<p>Merci de réessayer dans un instant.</p>'
-            . '<p><a href="/">Retour à l’accueil</a></p></div>';
+            . '<p><a href="' . e(u('/')) . '">Retour à l’accueil</a></p></div>';
     });
 }
 

@@ -67,10 +67,10 @@ include dirname(__DIR__) . '/inc/admin-start.php';
     <?php foreach ($groups as $index => $group): ?>
       <a href="#<?= e($group['key']) ?>" class="<?= $index === 0 ? 'is-active' : '' ?>"><span><?= e($group['icon']) ?></span><?= e($group['label']) ?></a>
     <?php endforeach; ?>
-    <a class="settings__site" href="/" target="_blank" rel="noopener">Voir le site ↗</a>
+    <a class="settings__site" href="<?= e(u('/')) ?>" target="_blank" rel="noopener">Voir le site ↗</a>
   </nav>
 
-  <form class="admin-form" method="post" action="/admin/settings.php" enctype="multipart/form-data">
+  <form class="admin-form" method="post" action="<?= e(u('/admin/settings.php')) ?>" enctype="multipart/form-data">
     <?= csrf_field() ?>
 
     <?php foreach ($groups as $group): ?>

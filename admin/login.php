@@ -46,7 +46,7 @@ $next = get_param('next', post('next'));
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Connexion — Administration</title>
-  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="<?= e(u('/css/admin.css')) ?>">
 </head>
 <body class="auth-body">
   <div class="auth">
@@ -54,14 +54,14 @@ $next = get_param('next', post('next'));
       <p class="auth__kicker">Espace privé</p>
       <h1 class="auth__title">Connexion<br><em>administrateur</em></h1>
       <p class="auth__text">Ce panneau permet de modifier l’intégralité du portfolio : identité, projets, compétences, couleurs et messages reçus.</p>
-      <a class="auth__back" href="/">← Retour au site</a>
+      <a class="auth__back" href="<?= e(u('/')) ?>">← Retour au site</a>
     </section>
 
     <section class="auth__form">
       <h2>Accéder au tableau de bord</h2>
       <?php if ($error !== ''): ?><div class="alert alert--error" role="alert"><?= e($error) ?></div><?php endif; ?>
 
-      <form method="post" action="/admin/login.php" class="admin-form">
+      <form method="post" action="<?= e(u('/admin/login.php')) ?>" class="admin-form">
         <input type="hidden" name="next" value="<?= e($next) ?>">
         <label class="field">
           <span>Adresse e-mail</span>

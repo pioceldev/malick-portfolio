@@ -72,14 +72,14 @@ function public_data(): array
 
 function project_url(string $slug): string
 {
-    return '/projets/' . rawurlencode($slug);
+    return u('/projets/' . rawurlencode($slug));
 }
 
 function admin_url(string $page = '', array $query = []): string
 {
-    $url = '/admin/' . ltrim($page, '/');
+    $url = u('/admin/' . ltrim($page, '/'));
     if ($query !== []) {
-        $url .= '?' . http_build_query($query);
+        $url .= (str_contains($url, '?') ? '&' : '?') . http_build_query($query);
     }
     return $url;
 }

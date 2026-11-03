@@ -351,7 +351,7 @@ include __DIR__ . '/inc/nav.php';
           <div class="notice notice--error" role="alert"><?= e($contactError) ?></div>
         <?php endif; ?>
 
-        <form class="form" action="/contact.php" method="post" novalidate>
+        <form class="form" action="<?= e(u('/contact.php')) ?>" method="post" novalidate>
           <input type="hidden" name="elapsed" value="0" data-elapsed>
           <div class="form__honeypot" aria-hidden="true">
             <label>Ne pas remplir<input type="text" name="website" tabindex="-1" autocomplete="off"></label>

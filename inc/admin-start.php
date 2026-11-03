@@ -19,8 +19,8 @@ $isActive = static function (string $key) use ($activeKey): string {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title><?= e($title) ?> — Administration</title>
-  <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="preload" href="<?= e(u('/fonts/inter-latin.woff2')) ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="<?= e(u('/css/admin.css')) ?>">
 </head>
 <body class="admin-body">
 <a class="skip-link" href="#admin-main">Aller au contenu</a>
@@ -30,7 +30,7 @@ $isActive = static function (string $key) use ($activeKey): string {
 </button>
 
 <aside class="sidebar" id="sidebar">
-  <a class="sidebar__brand" href="/admin/">
+  <a class="sidebar__brand" href="<?= e(u('/admin/')) ?>">
     <span class="sidebar__mark">◈</span>
     <span>
       <strong>Administration</strong>
@@ -40,12 +40,12 @@ $isActive = static function (string $key) use ($activeKey): string {
 
   <nav class="sidebar__nav" aria-label="Navigation administration">
     <p class="sidebar__label">Pilotage</p>
-    <a href="/admin/" class="<?= $isActive('dashboard') ?>"><span>Tableau de bord</span></a>
-    <a href="/admin/messages.php" class="<?= $isActive('messages') ?>">
+    <a href="<?= e(u('/admin/')) ?>" class="<?= $isActive('dashboard') ?>"><span>Tableau de bord</span></a>
+    <a href="<?= e(u('/admin/messages.php')) ?>" class="<?= $isActive('messages') ?>">
       <span>Messages</span>
       <?php if ($unreadCount > 0): ?><em class="badge"><?= $unreadCount ?></em><?php endif; ?>
     </a>
-    <a href="/admin/media.php" class="<?= $isActive('media') ?>"><span>Médiathèque</span></a>
+    <a href="<?= e(u('/admin/media.php')) ?>" class="<?= $isActive('media') ?>"><span>Médiathèque</span></a>
 
     <p class="sidebar__label">Contenu</p>
     <?php foreach (content_entity_keys() as $key): ?>
@@ -56,14 +56,14 @@ $isActive = static function (string $key) use ($activeKey): string {
     <?php endforeach; ?>
 
     <p class="sidebar__label">Site</p>
-    <a href="/admin/settings.php" class="<?= $isActive('settings') ?>"><span>Réglages</span></a>
+    <a href="<?= e(u('/admin/settings.php')) ?>" class="<?= $isActive('settings') ?>"><span>Réglages</span></a>
     <a href="<?= e(entity_list_url('navigation')) ?>" class="<?= $isActive('entity:navigation') ?>"><span>Navigation</span></a>
-    <a href="/admin/account.php" class="<?= $isActive('account') ?>"><span>Mon compte</span></a>
+    <a href="<?= e(u('/admin/account.php')) ?>" class="<?= $isActive('account') ?>"><span>Mon compte</span></a>
   </nav>
 
   <div class="sidebar__foot">
-    <a class="sidebar__view" href="/" target="_blank" rel="noopener">Voir le site ↗</a>
-    <form action="/admin/logout.php" method="post">
+    <a class="sidebar__view" href="<?= e(u('/')) ?>" target="_blank" rel="noopener">Voir le site ↗</a>
+    <form action="<?= e(u('/admin/logout.php')) ?>" method="post">
       <?= csrf_field() ?>
       <button type="submit" class="sidebar__logout">Déconnexion</button>
     </form>

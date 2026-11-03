@@ -68,9 +68,9 @@ $schema = array_filter([
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230A0A0B'/><text x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23C9F24D' text-anchor='middle'><?= e(mb_substr($settings['display_name'] ?: 'M', 0, 1)) ?></text></svg>">
   <?php endif; ?>
 
-  <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/site.css">
+  <link rel="preload" href="<?= e(u('/fonts/inter-latin.woff2')) ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="<?= e(u('/fonts/instrument-serif-italic.woff2')) ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="<?= e(u('/css/site.css')) ?>">
   <script type="application/ld+json"><?= json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
 </head>
 <body class="<?= e($bodyClass) ?>" style="

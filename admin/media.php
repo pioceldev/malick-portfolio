@@ -38,7 +38,7 @@ include dirname(__DIR__) . '/inc/admin-start.php';
 <section class="panel">
   <h2 class="panel__title">Importer des fichiers</h2>
   <p class="muted">Images (JPG, PNG, WebP, AVIF, SVG) et PDF — 12 Mo maximum par fichier.</p>
-  <form method="post" action="/admin/media.php" enctype="multipart/form-data" class="upload-form">
+  <form method="post" action="<?= e(u('/admin/media.php')) ?>" enctype="multipart/form-data" class="upload-form">
     <?= csrf_field() ?>
     <label class="dropzone">
       <input type="file" name="files[]" accept="image/*,application/pdf" multiple required>
@@ -66,7 +66,7 @@ include dirname(__DIR__) . '/inc/admin-start.php';
         <article class="media-card">
           <div class="media-card__preview">
             <?php if (str_starts_with((string) $item['mime'], 'image/')): ?>
-              <img src="/uploads/<?= e(rawurlencode((string) $item['filename'])) ?>" alt="<?= e($item['alt']) ?>" loading="lazy">
+              <img src="<?= e(image_url((string) $item['filename'])) ?>" alt="<?= e($item['alt']) ?>" loading="lazy">
             <?php else: ?>
               <span class="file-chip">PDF</span>
             <?php endif; ?>
@@ -74,15 +74,15 @@ include dirname(__DIR__) . '/inc/admin-start.php';
           <div class="media-card__body">
             <p class="media-card__name" title="<?= e($item['original_name']) ?>"><?= e($item['original_name']) ?></p>
             <p class="media-card__meta"><?= e(file_size_label((int) $item['size'])) ?> · <?= e(substr((string) $item['created_at'], 0, 10)) ?></p>
-            <form method="post" action="/admin/media-alt.php" class="media-card__alt">
+            <form method="post" action="<?= e(u('/admin/media-alt.php')) ?>" class="media-card__alt">
               <?= csrf_field() ?>
               <input type="hidden" name="id" value="<?= (int) $item['id'] ?>">
               <input type="text" name="alt" value="<?= e($item['alt']) ?>" placeholder="Texte alternatif (accessibilité)" aria-label="Texte alternatif">
               <button class="btn btn--tiny" type="submit">OK</button>
             </form>
             <div class="media-card__actions">
-              <code>/uploads/<?= e($item['filename']) ?></code>
-              <form method="post" action="/admin/media-delete.php" data-confirm="Supprimer ce fichier ? Les pages qui l’utilisent afficheront un visuel manquant.">
+              <code><?= e(u('/uploads/' . $item['filename'])) ?></code>
+              <form method="post" action="<?= e(u('/admin/media-delete.php')) ?>" data-confirm="Supprimer ce fichier ? Les pages qui l’utilisent afficheront un visuel manquant.">
                 <?= csrf_field() ?>
                 <input type="hidden" name="id" value="<?= (int) $item['id'] ?>">
                 <button class="btn btn--tiny btn--danger" type="submit">Supprimer</button>

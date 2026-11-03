@@ -137,7 +137,7 @@ function uploads_dir_check(): void
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Installation — Portfolio</title>
-  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="<?= e(u('/css/admin.css')) ?>">
 </head>
 <body class="auth-body">
   <div class="auth" style="grid-template-columns:1fr">
@@ -154,7 +154,7 @@ function uploads_dir_check(): void
           <?php foreach ($steps as $step): ?><li><?= $step ?></li><?php endforeach; ?>
         </ul>
         <p style="margin-top:20px">
-          <a class="btn btn--primary" href="/admin/setup.php">Créer mon compte administrateur</a>
+          <a class="btn btn--primary" href="<?= e(u('/admin/setup.php')) ?>">Créer mon compte administrateur</a>
         </p>
         <p class="muted" style="margin-top:14px">Pensez à supprimer <code>install.php</code> une fois l’installation faite.</p>
       <?php endif; ?>

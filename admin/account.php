@@ -56,7 +56,7 @@ include dirname(__DIR__) . '/inc/admin-start.php';
 <div class="two-col">
   <section class="panel">
     <h2 class="panel__title">Identifiants</h2>
-    <form class="admin-form" method="post" action="/admin/account.php">
+    <form class="admin-form" method="post" action="<?= e(u('/admin/account.php')) ?>">
       <?= csrf_field() ?>
       <label class="field">
         <span>Nom</span>

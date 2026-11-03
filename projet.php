@@ -53,7 +53,7 @@ include __DIR__ . '/inc/nav.php';
 
   <article class="case">
     <header class="case__head">
-      <a class="case__back" href="/#projets"><span aria-hidden="true">←</span> Tous les projets</a>
+      <a class="case__back" href="<?= e(u('/#projets')) ?>"><span aria-hidden="true">←</span> Tous les projets</a>
       <p class="case__kicker reveal"><?= e($project['category']) ?><?php if (!empty($project['year'])): ?> · <?= e($project['year']) ?><?php endif; ?></p>
       <h1 class="case__title reveal"><?= e($project['title']) ?></h1>
       <?php if (!empty($project['summary'])): ?><p class="case__summary reveal"><?= e($project['summary']) ?></p><?php endif; ?>

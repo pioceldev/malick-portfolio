@@ -131,7 +131,11 @@ function require_auth(): array
         return $user;
     }
 
-    $next = $_SERVER['REQUEST_URI'] ?? '/admin/';
+    $next = (string) ($_SERVER['REQUEST_URI'] ?? '/admin/');
+    $base = base_path();
+    if ($base !== '' && str_starts_with($next, $base)) {
+        $next = substr($next, strlen($base));
+    }
     redirect('/admin/login.php?next=' . rawurlencode($next));
 }
 

@@ -290,7 +290,7 @@ include dirname(__DIR__) . '/inc/admin-start.php';
       <button class="btn btn--primary btn--block" type="submit">Enregistrer</button>
       <a class="btn btn--ghost btn--block" href="<?= e(entity_list_url($entityKey)) ?>">Annuler</a>
       <?php if (!empty($entity['preview']) && !$isNew): ?>
-        <a class="btn btn--ghost btn--block" href="/admin/preview.php?id=<?= (int) $existing['id'] ?>" target="_blank" rel="noopener">Prévisualiser</a>
+        <a class="btn btn--ghost btn--block" href="<?= e(admin_url('preview.php', ['id' => (int) $existing['id']])) ?>" target="_blank" rel="noopener">Prévisualiser</a>
       <?php endif; ?>
     </div>
 

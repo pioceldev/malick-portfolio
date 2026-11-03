@@ -20,7 +20,7 @@ $activeKey = 'messages';
 include dirname(__DIR__) . '/inc/admin-start.php';
 ?>
 
-<a class="link" href="/admin/messages.php">← Retour à la boîte de réception</a>
+<a class="link" href="<?= e(u('/admin/messages.php')) ?>">← Retour à la boîte de réception</a>
 
 <article class="panel message">
   <header class="message__head">
@@ -36,18 +36,18 @@ include dirname(__DIR__) . '/inc/admin-start.php';
     </div>
     <div class="row-actions">
       <a class="btn btn--primary btn--tiny" href="mailto:<?= e($message['email']) ?>?subject=<?= e(rawurlencode('Re: ' . ($message['subject'] ?: 'Votre message'))) ?>">Répondre</a>
-      <form method="post" action="/admin/message-action.php">
+      <form method="post" action="<?= e(u('/admin/message-action.php')) ?>">
         <?= csrf_field() ?>
         <input type="hidden" name="id" value="<?= (int) $message['id'] ?>">
         <input type="hidden" name="action" value="<?= (int) $message['archived'] ? 'restore' : 'archive' ?>">
-        <input type="hidden" name="back" value="/admin/message.php?id=<?= (int) $message['id'] ?>">
+        <input type="hidden" name="back" value="<?= e(admin_url('message.php', ['id' => (int) $message['id']])) ?>">
         <button class="btn btn--tiny" type="submit"><?= (int) $message['archived'] ? 'Restaurer' : 'Archiver' ?></button>
       </form>
-      <form method="post" action="/admin/message-action.php" data-confirm="Supprimer ce message ?">
+      <form method="post" action="<?= e(u('/admin/message-action.php')) ?>" data-confirm="Supprimer ce message ?">
         <?= csrf_field() ?>
         <input type="hidden" name="id" value="<?= (int) $message['id'] ?>">
         <input type="hidden" name="action" value="delete">
-        <input type="hidden" name="back" value="/admin/messages.php">
+        <input type="hidden" name="back" value="<?= e(admin_url('messages.php')) ?>">
         <button class="btn btn--tiny btn--danger" type="submit">Supprimer</button>
       </form>
     </div>

@@ -21,8 +21,8 @@ include dirname(__DIR__) . '/inc/admin-start.php';
 
 <div class="toolbar">
   <div class="tabs">
-    <a href="/admin/messages.php" class="<?= !$showArchived ? 'is-active' : '' ?>">Boîte de réception</a>
-    <a href="/admin/messages.php?archive=1" class="<?= $showArchived ? 'is-active' : '' ?>">Archivés</a>
+    <a href="<?= e(u('/admin/messages.php')) ?>" class="<?= !$showArchived ? 'is-active' : '' ?>">Boîte de réception</a>
+    <a href="<?= e(u('/admin/messages.php?archive=1')) ?>" class="<?= $showArchived ? 'is-active' : '' ?>">Archivés</a>
   </div>
   <p class="toolbar__count"><?= count($messages) ?> message(s)</p>
 </div>
@@ -49,26 +49,26 @@ include dirname(__DIR__) . '/inc/admin-start.php';
           <?php foreach ($messages as $message): ?>
             <tr class="<?= (int) $message['is_read'] ? '' : 'is-unread' ?>">
               <td>
-                <a class="link-strong" href="/admin/message.php?id=<?= (int) $message['id'] ?>"><?= e($message['name']) ?></a>
+                <a class="link-strong" href="<?= e(admin_url('message.php', ['id' => (int) $message['id']])) ?>"><?= e($message['name']) ?></a>
                 <small class="muted block"><?= e($message['email']) ?></small>
               </td>
               <td>
-                <a href="/admin/message.php?id=<?= (int) $message['id'] ?>"><?= e($message['subject'] ?: 'Sans sujet') ?></a>
+                <a href="<?= e(admin_url('message.php', ['id' => (int) $message['id']])) ?>"><?= e($message['subject'] ?: 'Sans sujet') ?></a>
                 <?php if (!(int) $message['is_read']): ?><span class="pill pill--new">Nouveau</span><?php endif; ?>
               </td>
               <td><?= e($message['project_type'] ?: '—') ?></td>
               <td><?= e(substr((string) $message['created_at'], 0, 16)) ?></td>
               <td class="cell-actions">
                 <div class="row-actions">
-                  <a class="btn btn--tiny" href="/admin/message.php?id=<?= (int) $message['id'] ?>">Lire</a>
-                  <form method="post" action="/admin/message-action.php">
+                  <a class="btn btn--tiny" href="<?= e(admin_url('message.php', ['id' => (int) $message['id']])) ?>">Lire</a>
+                  <form method="post" action="<?= e(u('/admin/message-action.php')) ?>">
                     <?= csrf_field() ?>
                     <input type="hidden" name="id" value="<?= (int) $message['id'] ?>">
                     <input type="hidden" name="action" value="<?= (int) $message['archived'] ? 'restore' : 'archive' ?>">
                     <input type="hidden" name="back" value="<?= e($backUrl) ?>">
                     <button class="btn btn--tiny" type="submit"><?= (int) $message['archived'] ? 'Restaurer' : 'Archiver' ?></button>
                   </form>
-                  <form method="post" action="/admin/message-action.php" data-confirm="Supprimer ce message ?">
+                  <form method="post" action="<?= e(u('/admin/message-action.php')) ?>" data-confirm="Supprimer ce message ?">
                     <?= csrf_field() ?>
                     <input type="hidden" name="id" value="<?= (int) $message['id'] ?>">
                     <input type="hidden" name="action" value="delete">

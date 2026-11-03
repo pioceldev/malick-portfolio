@@ -50,7 +50,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>Création du compte — Administration</title>
-  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="<?= e(u('/css/admin.css')) ?>">
 </head>
 <body class="auth-body">
   <div class="auth">
@@ -58,14 +58,14 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
       <p class="auth__kicker">Première configuration</p>
       <h1 class="auth__title">Créez votre<br><em>compte admin</em></h1>
       <p class="auth__text">Aucun compte n’existe encore. Cette page disparaîtra automatiquement dès que votre compte sera créé.</p>
-      <a class="auth__back" href="/">← Retour au site</a>
+      <a class="auth__back" href="<?= e(u('/')) ?>">← Retour au site</a>
     </section>
 
     <section class="auth__form">
       <h2>Votre compte</h2>
       <?php if ($error !== ''): ?><div class="alert alert--error" role="alert"><?= e($error) ?></div><?php endif; ?>
 
-      <form method="post" action="/admin/setup.php" class="admin-form">
+      <form method="post" action="<?= e(u('/admin/setup.php')) ?>" class="admin-form">
         <label class="field">
           <span>Nom</span>
           <input type="text" name="name" value="<?= e($name) ?>" required autocomplete="name">

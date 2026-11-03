@@ -1,15 +1,16 @@
 <?php
 /** Navigation publique. Variables attendues : $settings, $nav, $socials, $cv. */
+$navHref = static fn (string $href): string => str_starts_with($href, '/') ? u($href) : $href;
 ?>
 <header class="nav" id="nav">
-  <a class="nav__brand" href="/" aria-label="<?= e($settings['display_name']) ?> — accueil">
+  <a class="nav__brand" href="<?= e(u('/')) ?>" aria-label="<?= e($settings['display_name']) ?> — accueil">
     <span class="nav__mark" aria-hidden="true"><?= e(mb_strtoupper(mb_substr($settings['display_name'] ?: 'M', 0, 1))) ?></span>
     <span class="nav__name"><?= e($settings['display_name']) ?></span>
   </a>
 
   <nav class="nav__links" aria-label="Navigation principale">
     <?php foreach ($nav as $item): ?>
-      <a class="nav__link" href="<?= e($item['href']) ?>"><span><?= e($item['label']) ?></span></a>
+      <a class="nav__link" href="<?= e($navHref((string) $item['href'])) ?>"><span><?= e($item['label']) ?></span></a>
     <?php endforeach; ?>
   </nav>
 
@@ -31,7 +32,7 @@
 <div class="mobile-menu" id="mobile-menu" hidden>
   <nav aria-label="Navigation mobile">
     <?php foreach ($nav as $index => $item): ?>
-      <a class="mobile-menu__link" href="<?= e($item['href']) ?>" style="--i:<?= (int) $index ?>">
+      <a class="mobile-menu__link" href="<?= e($navHref((string) $item['href'])) ?>" style="--i:<?= (int) $index ?>">
         <span class="mobile-menu__num">0<?= (int) $index + 1 ?></span>
         <span><?= e($item['label']) ?></span>
       </a>

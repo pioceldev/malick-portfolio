@@ -40,7 +40,7 @@ include dirname(__DIR__) . '/inc/admin-start.php';
     <strong class="stat__value"><?= $counts['experiences'] ?></strong>
     <span class="stat__link">Gérer →</span>
   </a>
-  <a class="stat stat--accent" href="/admin/messages.php">
+  <a class="stat stat--accent" href="<?= e(u('/admin/messages.php')) ?>">
     <span class="stat__label">Messages non lus</span>
     <strong class="stat__value"><?= $counts['unread'] ?></strong>
     <span class="stat__link"><?= $counts['messages'] ?> message(s) actif(s) →</span>
@@ -50,7 +50,7 @@ include dirname(__DIR__) . '/inc/admin-start.php';
     <strong class="stat__value"><?= $counts['testimonials'] ?></strong>
     <span class="stat__link">Gérer →</span>
   </a>
-  <a class="stat" href="/admin/media.php">
+  <a class="stat" href="<?= e(u('/admin/media.php')) ?>">
     <span class="stat__label">Médias</span>
     <strong class="stat__value"><?= $counts['media'] ?></strong>
     <span class="stat__link">Ouvrir →</span>
@@ -69,7 +69,7 @@ include dirname(__DIR__) . '/inc/admin-start.php';
     <li class="<?= $siteSettings['cv_file'] ? 'is-done' : '' ?>"><span></span>Joindre votre CV en PDF</li>
     <li class="<?= $siteSettings['canonical_url'] ? 'is-done' : '' ?>"><span></span>Renseigner l’URL du site (SEO)</li>
   </ul>
-  <a class="btn btn--primary" href="/admin/settings.php">Compléter les réglages</a>
+  <a class="btn btn--primary" href="<?= e(u('/admin/settings.php')) ?>">Compléter les réglages</a>
 </section>
 <?php endif; ?>
 
@@ -77,7 +77,7 @@ include dirname(__DIR__) . '/inc/admin-start.php';
   <section class="panel">
     <div class="panel__head">
       <h2 class="panel__title">Derniers messages</h2>
-      <a href="/admin/messages.php" class="link">Tout voir →</a>
+      <a href="<?= e(u('/admin/messages.php')) ?>" class="link">Tout voir →</a>
     </div>
     <?php if (!$recentMessages): ?>
       <p class="muted">Aucun message pour l’instant. Le formulaire de contact est actif.</p>
@@ -85,7 +85,7 @@ include dirname(__DIR__) . '/inc/admin-start.php';
       <ul class="mini-list">
         <?php foreach ($recentMessages as $message): ?>
           <li>
-            <a href="/admin/message.php?id=<?= (int) $message['id'] ?>">
+            <a href="<?= e(admin_url('message.php', ['id' => (int) $message['id']])) ?>">
               <span class="mini-list__main">
                 <strong><?= e($message['name']) ?><?php if (!(int) $message['is_read']): ?><em class="dot-new"></em><?php endif; ?></strong>
                 <small><?= e($message['subject'] ?: ($message['project_type'] ?: 'Sans sujet')) ?> — <?= e(substr((string) $message['created_at'], 0, 16)) ?></small>

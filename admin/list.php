@@ -67,17 +67,17 @@ include dirname(__DIR__) . '/inc/admin-start.php';
                 <div class="row-actions">
                   <a class="btn btn--tiny" href="<?= e(entity_edit_url($entityKey, (int) $item['id'])) ?>">Modifier</a>
                   <?php if (!empty($entity['preview'])): ?>
-                    <a class="btn btn--tiny" href="/admin/preview.php?id=<?= (int) $item['id'] ?>" target="_blank" rel="noopener">Aperçu</a>
+                    <a class="btn btn--tiny" href="<?= e(admin_url('preview.php', ['id' => (int) $item['id']])) ?>" target="_blank" rel="noopener">Aperçu</a>
                   <?php endif; ?>
                   <?php if (in_array('published', array_column($entity['fields'], 'name'), true)): ?>
-                    <form method="post" action="/admin/toggle.php">
+                    <form method="post" action="<?= e(u('/admin/toggle.php')) ?>">
                       <?= csrf_field() ?>
                       <input type="hidden" name="entity" value="<?= e($entityKey) ?>">
                       <input type="hidden" name="id" value="<?= (int) $item['id'] ?>">
                       <button class="btn btn--tiny" type="submit"><?= (int) $item['published'] ? 'Dépublier' : 'Publier' ?></button>
                     </form>
                   <?php endif; ?>
-                  <form method="post" action="/admin/delete.php" data-confirm="Supprimer définitivement « <?= e($item['title'] ?? $item['name'] ?? $item['label'] ?? $item['id']) ?> » ?">
+                  <form method="post" action="<?= e(u('/admin/delete.php')) ?>" data-confirm="Supprimer définitivement « <?= e($item['title'] ?? $item['name'] ?? $item['label'] ?? $item['id']) ?> » ?">
                     <?= csrf_field() ?>
                     <input type="hidden" name="entity" value="<?= e($entityKey) ?>">
                     <input type="hidden" name="id" value="<?= (int) $item['id'] ?>">

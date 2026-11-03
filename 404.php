@@ -26,8 +26,8 @@ include __DIR__ . '/inc/nav.php';
   <h1 class="error-page__title">Cette page<br><em>n’existe pas.</em></h1>
   <p class="error-page__text">Le lien est peut-être obsolète, ou l’adresse contient une faute de frappe.</p>
   <div class="hero__actions">
-    <a class="btn btn--solid" href="/" data-magnetic><span>Retour à l’accueil</span></a>
-    <a class="btn btn--ghost" href="/#contact" data-magnetic><span>Me contacter</span></a>
+    <a class="btn btn--solid" href="<?= e(u('/')) ?>" data-magnetic><span>Retour à l’accueil</span></a>
+    <a class="btn btn--ghost" href="<?= e(u('/#contact')) ?>" data-magnetic><span>Me contacter</span></a>
   </div>
 </main>
 

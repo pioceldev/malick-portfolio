@@ -3,11 +3,11 @@
 .DS_Store
 
 # Configuration locale (identifiants MySQL, clés Brevo)
-php/inc/config.local.php
+inc/config.local.php
 
 # Médias importés : servis depuis le disque de l'hébergeur, pas versionnés
-php/uploads/*
-!php/uploads/.gitkeep
+uploads/*
+!uploads/.gitkeep
 
 # Ancienne base SQLite, conservée comme archive locale
 data/

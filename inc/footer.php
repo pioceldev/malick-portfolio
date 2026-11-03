@@ -1,5 +1,6 @@
 <?php
 /** Pied de page public. Variables attendues : $settings, $nav, $socials. */
+$footerHref = static fn (string $href): string => str_starts_with($href, '/') ? u($href) : $href;
 ?>
 <footer class="footer" id="footer">
   <div class="footer__top">
@@ -12,7 +13,7 @@
     <div class="footer__cols">
       <div class="footer__col">
         <p class="footer__label">Navigation</p>
-        <?php foreach ($nav as $item): ?><a href="<?= e($item['href']) ?>"><?= e($item['label']) ?></a><?php endforeach; ?>
+        <?php foreach ($nav as $item): ?><a href="<?= e($footerHref((string) $item['href'])) ?>"><?= e($item['label']) ?></a><?php endforeach; ?>
       </div>
       <div class="footer__col">
         <p class="footer__label">Contact</p>
@@ -35,6 +36,6 @@
     <a class="footer__up" href="#top" data-magnetic>Retour en haut <span aria-hidden="true">↑</span></a>
   </div>
 </footer>
-<script src="/js/site.js" defer></script>
+<script src="<?= e(u('/js/site.js')) ?>" defer></script>
 </body>
 </html>
