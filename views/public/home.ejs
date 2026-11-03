@@ -1,0 +1,377 @@
+<%- include('../partials/head', { canonicalPath: '/' }) %>
+<%- include('../partials/nav') %>
+
+<main id="main">
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero" id="top">
+    <div class="hero__grid">
+      <div class="hero__lead">
+        <div class="hero__meta reveal" data-delay="0">
+          <% if (settings.location) { %><span class="hero__chip"><%= settings.location %></span><% } %>
+          <% if (settings.availability) { %>
+            <span class="hero__chip hero__chip--live"><span class="dot"></span><%= settings.availability %></span>
+          <% } %>
+        </div>
+
+        <h1 class="hero__title">
+          <span class="line"><span class="line__inner"><%= settings.pro_name || settings.display_name %></span></span>
+          <span class="line line--sub"><span class="line__inner"><em><%= settings.role_title %></em></span></span>
+        </h1>
+
+        <p class="hero__tagline reveal" data-delay="2"><%= settings.tagline %></p>
+
+        <div class="hero__actions reveal" data-delay="3">
+          <% if (projects.length) { %>
+            <a class="btn btn--solid" href="#projets" data-magnetic><span>Découvrir mes projets</span></a>
+          <% } %>
+          <a class="btn btn--ghost" href="#contact" data-magnetic><span>Me contacter</span></a>
+        </div>
+
+        <div class="hero__foot reveal" data-delay="4">
+          <span class="hero__scroll"><span class="hero__scroll-line"></span>Faites défiler</span>
+          <% if (settings.email) { %>
+            <a class="hero__mail" href="mailto:<%= settings.email %>"><%= settings.email %></a>
+          <% } %>
+        </div>
+      </div>
+
+      <figure class="hero__portrait reveal" data-delay="2">
+        <% if (settings.portrait) { %>
+          <img src="<%= imageUrl(settings.portrait) %>" alt="Portrait de <%= settings.display_name %>" width="640" height="840" loading="eager" decoding="async">
+        <% } else { %>
+          <div class="hero__monogram" aria-hidden="true">
+            <span><%= (settings.display_name || 'M').charAt(0).toUpperCase() %></span>
+            <small><%= settings.pro_name || settings.display_name %></small>
+          </div>
+        <% } %>
+        <figcaption><%= settings.role_title %></figcaption>
+      </figure>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <% const words = (skills.length ? skills.map(s => s.name) : ['Développement Full-Stack','Développement Web','React.js','UI/UX Design','WordPress','HTML / CSS / JavaScript','PHP & Laravel','Python & SQL','Figma','Git & GitHub','Applications Web','Responsive Design']); %>
+        <% for (let loop = 0; loop < 2; loop++) { %>
+          <% words.forEach(word => { %>
+            <span class="marquee__item"><%= word %><i>✳</i></span>
+          <% }) %>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== PROJETS ========================== -->
+  <% if (projects.length) { %>
+  <section class="section section--work" id="projets">
+    <header class="section__head">
+      <p class="section__kicker reveal"><%= settings.work_kicker %></p>
+      <h2 class="section__title reveal"><%= settings.work_title %></h2>
+      <p class="section__count reveal"><%= String(projects.length).padStart(2, '0') %> projets</p>
+    </header>
+
+    <div class="projects" data-cursor="Voir">
+      <figure class="projects__preview" aria-hidden="true"><img alt="" src="" width="520" height="340"></figure>
+      <% projects.forEach((project, index) => { %>
+        <a class="project reveal" href="/projets/<%= project.slug %>"
+           data-cover="<%= project.coverUrl %>"
+           data-delay="<%= index % 3 %>">
+          <span class="project__index"><%= String(index + 1).padStart(2, '0') %></span>
+          <span class="project__main">
+            <span class="project__title"><%= project.title %></span>
+            <span class="project__summary"><%= truncate(project.summary, 110) %></span>
+          </span>
+          <span class="project__meta">
+            <span><%= project.category %></span>
+            <span><%= project.year %></span>
+          </span>
+          <span class="project__arrow" aria-hidden="true">↗</span>
+          <span class="project__thumb" aria-hidden="true">
+            <% if (project.coverUrl) { %><img src="<%= project.coverUrl %>" alt="" loading="lazy" decoding="async"><% } %>
+          </span>
+        </a>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- ========================== À PROPOS ========================== -->
+  <section class="section section--about" id="apropos">
+    <header class="section__head">
+      <p class="section__kicker reveal"><%= settings.about_kicker %></p>
+      <h2 class="section__title reveal"><%= settings.about_title %></h2>
+    </header>
+
+    <div class="about">
+      <div class="about__text reveal">
+        <%- paragraphs(settings.bio) %>
+        <% if (settings.vision) { %>
+          <blockquote class="about__quote"><%- paragraphs(settings.vision) %></blockquote>
+        <% } %>
+        <% if (settings.goals) { %>
+          <p class="about__label">Objectifs</p>
+          <%- paragraphs(settings.goals) %>
+        <% } %>
+        <% if (settings.interests) { %>
+          <ul class="tags">
+            <% settings.interests.split(',').map(i => i.trim()).filter(Boolean).forEach(item => { %>
+              <li><%= item %></li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+
+      <aside class="about__aside">
+        <% const stats = [
+          { value: settings.stat_1_value, label: settings.stat_1_label },
+          { value: settings.stat_2_value, label: settings.stat_2_label },
+          { value: settings.stat_3_value, label: settings.stat_3_label }
+        ].filter(stat => stat.value);
+        %>
+        <% if (stats.length) { %>
+          <ul class="stats">
+            <% stats.forEach(stat => { %>
+              <li class="reveal"><span class="stats__value"><%= stat.value %></span><span class="stats__label"><%= stat.label %></span></li>
+            <% }) %>
+          </ul>
+        <% } %>
+
+        <% if (settings.portrait) { %>
+          <figure class="about__photo reveal">
+            <img src="<%= imageUrl(settings.portrait) %>" alt="<%= settings.display_name %>" loading="lazy" decoding="async" width="480" height="600">
+          </figure>
+        <% } %>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ========================= COMPÉTENCES ======================== -->
+  <% if (skills.length) { %>
+  <section class="section section--skills" id="competences">
+    <header class="section__head">
+      <p class="section__kicker reveal"><%= settings.skills_kicker %></p>
+      <h2 class="section__title reveal"><%= settings.skills_title %></h2>
+    </header>
+
+    <div class="skills">
+      <% Object.entries(skillGroups).forEach(([category, items], groupIndex) => { %>
+        <div class="skills__group reveal" data-delay="<%= groupIndex % 3 %>">
+          <h3 class="skills__category"><span><%= category %></span><span class="skills__count"><%= String(items.length).padStart(2, '0') %></span></h3>
+          <ul>
+            <% items.forEach(skill => { %>
+              <li class="skill">
+                <span class="skill__name"><%= skill.name %></span>
+                <% if (Number(skill.level) > 0) { %>
+                  <span class="skill__meter"><span style="--level: <%= Math.min(100, Number(skill.level)) %>%"></span></span>
+                <% } %>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- =========================== PARCOURS ========================= -->
+  <% if (experiences.length) { %>
+  <section class="section section--timeline" id="parcours">
+    <header class="section__head">
+      <p class="section__kicker reveal"><%= settings.exp_kicker %></p>
+      <h2 class="section__title reveal"><%= settings.exp_title %></h2>
+    </header>
+
+    <ol class="timeline">
+      <% experiences.forEach((item, index) => { %>
+        <li class="timeline__item reveal" data-delay="<%= index % 3 %>">
+          <span class="timeline__date"><%= item.start_date %><% if (item.end_date) { %><br><span><%= item.end_date %></span><% } %></span>
+          <div class="timeline__body">
+            <span class="timeline__kind"><%= item.kind %></span>
+            <h3 class="timeline__title"><%= item.title %><% if (item.org) { %> <span>· <%= item.org %></span><% } %></h3>
+            <% if (item.description) { %><%- paragraphs(item.description) %><% } %>
+            <div class="timeline__links">
+              <% if (item.url) { %><a href="<%= item.url %>" target="_blank" rel="noopener noreferrer">Voir le lien ↗</a><% } %>
+              <% if (item.document) { %><a href="<%= imageUrl(item.document) %>" target="_blank" rel="noopener">Document ↗</a><% } %>
+            </div>
+          </div>
+        </li>
+      <% }) %>
+    </ol>
+  </section>
+  <% } %>
+
+  <!-- =========================== SERVICES ========================= -->
+  <% if (services.length) { %>
+  <section class="section section--services" id="services">
+    <header class="section__head">
+      <p class="section__kicker reveal"><%= settings.services_kicker %></p>
+      <h2 class="section__title reveal"><%= settings.services_title %></h2>
+    </header>
+
+    <ul class="services">
+      <% services.forEach((service, index) => { %>
+        <li class="service reveal" data-delay="<%= index % 3 %>">
+          <span class="service__num"><%= service.icon || String(index + 1).padStart(2, '0') %></span>
+          <h3 class="service__title"><%= service.title %></h3>
+          <p class="service__text"><%= service.description %></p>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+  <% } %>
+
+  <!-- =========================== PROCESSUS ======================== -->
+  <% if (processSteps.length) { %>
+  <section class="section section--process" id="processus">
+    <header class="section__head">
+      <p class="section__kicker reveal"><%= settings.process_kicker %></p>
+      <h2 class="section__title reveal"><%= settings.process_title %></h2>
+    </header>
+
+    <ol class="process">
+      <% processSteps.forEach((step, index) => { %>
+        <li class="process__step reveal" data-delay="<%= index % 3 %>">
+          <span class="process__num"><%= String(index + 1).padStart(2, '0') %></span>
+          <div>
+            <h3><%= step.title %></h3>
+            <p><%= step.description %></p>
+          </div>
+        </li>
+      <% }) %>
+    </ol>
+  </section>
+  <% } %>
+
+  <!-- ========================== TÉMOIGNAGES ======================= -->
+  <% if (testimonials.length) { %>
+  <section class="section section--quotes" id="temoignages">
+    <header class="section__head">
+      <p class="section__kicker reveal"><%= settings.testimonials_kicker %></p>
+      <h2 class="section__title reveal"><%= settings.testimonials_title %></h2>
+    </header>
+
+    <div class="quotes">
+      <% testimonials.forEach((item, index) => { %>
+        <figure class="quote reveal" data-delay="<%= index % 3 %>">
+          <blockquote>« <%= item.message %> »</blockquote>
+          <figcaption>
+            <% if (item.photo) { %><img src="<%= imageUrl(item.photo) %>" alt="" width="48" height="48" loading="lazy"><% } %>
+            <span>
+              <strong><%= item.name %></strong>
+              <small><%= [item.role, item.company].filter(Boolean).join(' · ') %></small>
+            </span>
+            <% if (Number(item.rating) > 0) { %><span class="quote__stars" aria-label="<%= item.rating %> sur 5"><%= '★'.repeat(Math.min(5, Number(item.rating))) %></span><% } %>
+          </figcaption>
+        </figure>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- ============================ CONTACT ========================= -->
+  <section class="section section--contact" id="contact">
+    <header class="section__head">
+      <p class="section__kicker reveal"><%= settings.contact_kicker %></p>
+      <h2 class="section__title reveal"><%= settings.contact_title %></h2>
+    </header>
+
+    <div class="contact">
+      <div class="contact__info reveal">
+        <% if (settings.contact_intro) { %><p class="contact__intro"><%= settings.contact_intro %></p><% } %>
+
+        <ul class="contact__list">
+          <% if (settings.email) { %>
+            <li><span>E-mail</span><a class="contact__big" href="mailto:<%= settings.email %>" data-magnetic><%= settings.email %></a></li>
+          <% } %>
+          <% if (settings.phone) { %>
+            <li><span>Téléphone</span><a href="tel:<%= settings.phone.replace(/\s/g, '') %>"><%= settings.phone %></a></li>
+          <% } %>
+          <% if (settings.whatsapp) { %>
+            <li><span>WhatsApp</span><a href="https://wa.me/<%= settings.whatsapp.replace(/[^0-9]/g, '') %>" target="_blank" rel="noopener noreferrer">Discuter sur WhatsApp ↗</a></li>
+          <% } %>
+          <% if (settings.location) { %><li><span>Localisation</span><p><%= settings.location %></p></li><% } %>
+        </ul>
+
+        <div class="contact__socials">
+          <% socials.forEach(social => { %>
+            <a href="<%= social.url %>" target="_blank" rel="noopener noreferrer"><%= social.label %> ↗</a>
+          <% }) %>
+        </div>
+
+        <% if (cv) { %>
+          <a class="cv-card" href="<%= imageUrl(cv) %>" download data-magnetic>
+            <span class="cv-card__label">PDF</span>
+            <span class="cv-card__body">
+              <strong><%= settings.portfolio_cta_title || 'Télécharger mon CV' %></strong>
+              <small><%= settings.portfolio_cta_text %></small>
+            </span>
+            <span class="cv-card__arrow" aria-hidden="true">↓</span>
+          </a>
+        <% } %>
+      </div>
+
+      <div class="contact__form-wrap reveal">
+        <% if (sent) { %>
+          <div class="notice notice--ok" role="status">
+            <strong>Message envoyé.</strong>
+            <span>Merci, je reviens vers vous sous 48 h.</span>
+          </div>
+        <% } %>
+        <% if (contactError) { %>
+          <div class="notice notice--error" role="alert"><%= contactError %></div>
+        <% } %>
+
+        <form class="form" action="/contact" method="post" novalidate>
+          <input type="hidden" name="elapsed" value="0" data-elapsed>
+          <div class="form__honeypot" aria-hidden="true">
+            <label>Ne pas remplir<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+          </div>
+
+          <div class="form__row">
+            <label class="field">
+              <span>Nom<em>*</em></span>
+              <input type="text" name="name" required minlength="2" autocomplete="name" placeholder="Votre nom">
+            </label>
+            <label class="field">
+              <span>E-mail<em>*</em></span>
+              <input type="email" name="email" required autocomplete="email" placeholder="vous@entreprise.com">
+            </label>
+          </div>
+
+          <div class="form__row">
+            <label class="field">
+              <span>Type de projet</span>
+              <select name="project_type">
+                <option value="">Choisir…</option>
+                <option>Site web</option>
+                <option>Application web</option>
+                <option>UI/UX Design</option>
+                <option>Intégration</option>
+                <option>Autre</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Budget (optionnel)</span>
+              <input type="text" name="budget" placeholder="Ex. 1 500 €">
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Sujet</span>
+            <input type="text" name="subject" placeholder="En deux mots">
+          </label>
+
+          <label class="field">
+            <span>Message<em>*</em></span>
+            <textarea name="message" rows="5" required minlength="10" placeholder="Parlez-moi de votre projet, de vos objectifs et de votre échéance."></textarea>
+          </label>
+
+          <button class="btn btn--solid btn--wide" type="submit" data-magnetic><span>Envoyer le message</span></button>
+          <p class="form__legal">Vos données servent uniquement à répondre à votre message. Aucun transfert à des tiers.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>

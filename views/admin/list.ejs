@@ -1,0 +1,73 @@
+<%- include('shell-start', { title }) %>
+
+<div class="toolbar">
+  <p class="toolbar__count"><%= rows.length %> élément(s)</p>
+  <div class="toolbar__actions">
+    <a class="btn btn--primary" href="/admin/<%= entityKey %>/new">+ Nouveau</a>
+  </div>
+</div>
+
+<% if (saved) { %><div class="alert alert--ok">Enregistré.</div><% } %>
+<% if (deleted) { %><div class="alert alert--ok">Élément supprimé.</div><% } %>
+
+<section class="panel panel--flush">
+  <% if (rows.length === 0) { %>
+    <div class="empty">
+      <p class="empty__title">Rien ici pour le moment</p>
+      <p class="muted">Créez un premier élément pour l’afficher sur le site.</p>
+      <a class="btn btn--primary" href="/admin/<%= entityKey %>/new">+ Nouveau</a>
+    </div>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="cell-id">#</th>
+            <% entity.listColumns.forEach(column => { %><th><%= column.label %></th><% }) %>
+            <th class="cell-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% rows.forEach(row => { %>
+            <tr>
+              <td class="cell-id"><%= row.id %></td>
+              <% entity.listColumns.forEach(column => { %>
+                <td>
+                  <% if (column.type === 'bool') { %>
+                    <span class="pill <%= row[column.name] ? 'pill--ok' : 'pill--muted' %>"><%= row[column.name] ? 'Oui' : 'Non' %></span>
+                  <% } else { %>
+                    <%= row[column.name] === '' || row[column.name] === null ? '—' : String(row[column.name]).slice(0, 70) %>
+                  <% } %>
+                </td>
+              <% }) %>
+              <td class="cell-actions">
+                <div class="row-actions">
+                  <a class="btn btn--tiny" href="/admin/<%= entityKey %>/<%= row.id %>/edit">Modifier</a>
+                  <% if (entity.previewPath && entityKey === 'projects') { %>
+                    <a class="btn btn--tiny" href="/admin/preview/project/<%= row.id %>" target="_blank" rel="noopener">Aperçu</a>
+                  <% } %>
+                  <% if (entity.fields.some(f => f.name === 'published')) { %>
+                    <form method="post" action="/admin/<%= entityKey %>/<%= row.id %>/toggle">
+                      <input type="hidden" name="_csrf" value="<%= csrf %>">
+                      <button class="btn btn--tiny" type="submit"><%= row.published ? 'Dépublier' : 'Publier' %></button>
+                    </form>
+                  <% } %>
+                  <form method="post" action="/admin/<%= entityKey %>/<%= row.id %>/delete" data-confirm="Supprimer définitivement « <%= row.title || row.name || row.label || row.id %> » ?">
+                    <input type="hidden" name="_csrf" value="<%= csrf %>">
+                    <button class="btn btn--tiny btn--danger" type="submit">Supprimer</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
+
+<div class="hint-box">
+  <strong>Astuce :</strong> l’ordre d’affichage se règle avec le champ « Ordre d’affichage » (0 = en premier).
+</div>
+
+<%- include('shell-end') %>

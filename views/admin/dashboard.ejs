@@ -1,0 +1,103 @@
+<%- include('shell-start', { title }) %>
+
+<div class="stat-grid">
+  <a class="stat" href="/admin/projects">
+    <span class="stat__label">Projets</span>
+    <strong class="stat__value"><%= counts.projects %></strong>
+    <span class="stat__link">Gérer →</span>
+  </a>
+  <a class="stat" href="/admin/skills">
+    <span class="stat__label">Compétences</span>
+    <strong class="stat__value"><%= counts.skills %></strong>
+    <span class="stat__link">Gérer →</span>
+  </a>
+  <a class="stat" href="/admin/experiences">
+    <span class="stat__label">Étapes du parcours</span>
+    <strong class="stat__value"><%= counts.experiences %></strong>
+    <span class="stat__link">Gérer →</span>
+  </a>
+  <a class="stat stat--accent" href="/admin/messages">
+    <span class="stat__label">Messages non lus</span>
+    <strong class="stat__value"><%= counts.unread %></strong>
+    <span class="stat__link"><%= counts.messages %> message(s) actif(s) →</span>
+  </a>
+  <a class="stat" href="/admin/testimonials">
+    <span class="stat__label">Témoignages</span>
+    <strong class="stat__value"><%= counts.testimonials %></strong>
+    <span class="stat__link">Gérer →</span>
+  </a>
+  <a class="stat" href="/admin/media">
+    <span class="stat__label">Médias</span>
+    <strong class="stat__value"><%= counts.media %></strong>
+    <span class="stat__link">Ouvrir →</span>
+  </a>
+</div>
+
+<% if (counts.projects === 0 || counts.skills === 0 || counts.experiences === 0) { %>
+<section class="panel">
+  <h2 class="panel__title">Pour que le site soit complet</h2>
+  <p class="muted">Les sections vides sont automatiquement masquées sur le site public. Voici ce qu’il reste à renseigner :</p>
+  <ul class="checklist">
+    <li class="<%= counts.projects ? 'is-done' : '' %>"><span></span>Ajouter au moins 3 projets (avec image de couverture)</li>
+    <li class="<%= counts.skills ? 'is-done' : '' %>"><span></span>Lister vos compétences par catégorie</li>
+    <li class="<%= counts.experiences ? 'is-done' : '' %>"><span></span>Compléter expériences, formations et certifications</li>
+    <li class="<%= siteSettings.portrait ? 'is-done' : '' %>"><span></span>Ajouter une photo de profil dans les réglages</li>
+    <li class="<%= siteSettings.cv_file ? 'is-done' : '' %>"><span></span>Joindre votre CV en PDF</li>
+    <li class="<%= siteSettings.canonical_url ? 'is-done' : '' %>"><span></span>Renseigner l’URL du site (SEO)</li>
+  </ul>
+  <a class="btn btn--primary" href="/admin/settings">Compléter les réglages</a>
+</section>
+<% } %>
+
+<div class="two-col">
+  <section class="panel">
+    <div class="panel__head">
+      <h2 class="panel__title">Derniers messages</h2>
+      <a href="/admin/messages" class="link">Tout voir →</a>
+    </div>
+    <% if (recentMessages.length === 0) { %>
+      <p class="muted">Aucun message pour l’instant. Le formulaire de contact est actif.</p>
+    <% } else { %>
+      <ul class="mini-list">
+        <% recentMessages.forEach(message => { %>
+          <li>
+            <a href="/admin/messages/<%= message.id %>">
+              <span class="mini-list__main">
+                <strong><%= message.name %><% if (!message.is_read) { %><em class="dot-new"></em><% } %></strong>
+                <small><%= message.subject || message.project_type || 'Sans sujet' %> — <%= String(message.created_at).slice(0, 16) %></small>
+              </span>
+              <span class="mini-list__meta"><%= message.email %></span>
+            </a>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </section>
+
+  <section class="panel">
+    <div class="panel__head">
+      <h2 class="panel__title">Derniers projets</h2>
+      <a href="/admin/projects" class="link">Gérer →</a>
+    </div>
+    <% if (recentProjects.length === 0) { %>
+      <p class="muted">Aucun projet enregistré.</p>
+      <a class="btn btn--primary" href="/admin/projects/new">Créer le premier projet</a>
+    <% } else { %>
+      <ul class="mini-list">
+        <% recentProjects.forEach(project => { %>
+          <li>
+            <a href="/admin/projects/<%= project.id %>/edit">
+              <span class="mini-list__main">
+                <strong><%= project.title %></strong>
+                <small><%= project.category || 'Sans catégorie' %> · <%= project.year || '—' %></small>
+              </span>
+              <span class="pill <%= project.published ? 'pill--ok' : 'pill--muted' %>"><%= project.published ? 'Publié' : 'Brouillon' %></span>
+            </a>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </section>
+</div>
+
+<%- include('shell-end') %>

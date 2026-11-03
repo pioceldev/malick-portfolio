@@ -1,0 +1,86 @@
+<%- include('../partials/head', { canonicalPath: '/projets/' + project.slug }) %>
+<%- include('../partials/nav') %>
+
+<main id="main">
+  <% if (typeof preview !== 'undefined' && preview) { %>
+    <div class="preview-bar">Aperçu privé — ce projet n’est pas visible publiquement. <a href="/admin/projets/<%= project.id %>/edit">Modifier</a></div>
+  <% } %>
+
+  <article class="case">
+    <header class="case__head">
+      <a class="case__back" href="/#projets"><span aria-hidden="true">←</span> Tous les projets</a>
+      <p class="case__kicker reveal"><%= project.category %><% if (project.year) { %> · <%= project.year %><% } %></p>
+      <h1 class="case__title reveal"><%= project.title %></h1>
+      <% if (project.summary) { %><p class="case__summary reveal"><%= project.summary %></p><% } %>
+    </header>
+
+    <dl class="case__meta reveal">
+      <div><dt>Statut</dt><dd><%= project.status %></dd></div>
+      <% if (project.category) { %><div><dt>Catégorie</dt><dd><%= project.category %></dd></div><% } %>
+      <% if (project.year) { %><div><dt>Année</dt><dd><%= project.year %></dd></div><% } %>
+      <% if (project.techList.length) { %><div><dt>Technologies</dt><dd><%= project.techList.join(', ') %></dd></div><% } %>
+    </dl>
+
+    <div class="case__actions reveal">
+      <% if (project.demo) { %><a class="btn btn--solid" href="<%= project.demo %>" target="_blank" rel="noopener noreferrer" data-magnetic><span>Voir le site ↗</span></a><% } %>
+      <% if (project.repo) { %><a class="btn btn--ghost" href="<%= project.repo %>" target="_blank" rel="noopener noreferrer" data-magnetic><span>Code source ↗</span></a><% } %>
+    </div>
+
+    <% if (project.coverUrl) { %>
+      <figure class="case__cover reveal">
+        <img src="<%= project.coverUrl %>" alt="Aperçu du projet <%= project.title %>" width="1600" height="1000" loading="eager" decoding="async">
+      </figure>
+    <% } %>
+
+    <div class="case__body">
+      <div class="case__text reveal">
+        <%- paragraphs(project.description || project.summary) %>
+      </div>
+
+      <% if (project.techList.length) { %>
+        <aside class="case__side reveal">
+          <p class="case__side-label">Technologies</p>
+          <ul class="tags">
+            <% project.techList.forEach(tech => { %><li><%= tech %></li><% }) %>
+          </ul>
+          <p class="case__side-label">Liens</p>
+          <ul class="case__links">
+            <% if (project.demo) { %><li><a href="<%= project.demo %>" target="_blank" rel="noopener noreferrer">Démonstration ↗</a></li><% } %>
+            <% if (project.repo) { %><li><a href="<%= project.repo %>" target="_blank" rel="noopener noreferrer">Dépôt GitHub ↗</a></li><% } %>
+            <% if (!project.demo && !project.repo) { %><li class="muted">Aucun lien public</li><% } %>
+          </ul>
+        </aside>
+      <% } %>
+    </div>
+
+    <% if (project.galleryList.length) { %>
+      <section class="case__gallery">
+        <h2 class="case__gallery-title">Galerie</h2>
+        <div class="gallery">
+          <% project.galleryList.forEach((file, index) => { %>
+            <figure class="gallery__item reveal" data-delay="<%= index % 3 %>">
+              <img src="<%= imageUrl(file) %>" alt="<%= project.title %> — visuel <%= index + 1 %>" loading="lazy" decoding="async">
+            </figure>
+          <% }) %>
+        </div>
+      </section>
+    <% } %>
+  </article>
+
+  <% if (related.length) { %>
+    <section class="section section--related">
+      <header class="section__head"><p class="section__kicker">À suivre</p><h2 class="section__title">Projets similaires</h2></header>
+      <div class="related">
+        <% related.forEach(item => { %>
+          <a class="related__item" href="/projets/<%= item.slug %>">
+            <% if (item.coverUrl) { %><img src="<%= item.coverUrl %>" alt="" loading="lazy"> <% } %>
+            <span><strong><%= item.title %></strong><small><%= item.category %> · <%= item.year %></small></span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

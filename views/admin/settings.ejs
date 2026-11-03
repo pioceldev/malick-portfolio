@@ -1,0 +1,102 @@
+<%- include('shell-start', { title }) %>
+
+<% if (saved) { %><div class="alert alert--ok">Réglages enregistrés. Les changements sont déjà visibles sur le site.</div><% } %>
+
+<div class="settings">
+  <nav class="settings__tabs" aria-label="Sections des réglages">
+    <% groups.forEach((group, index) => { %>
+      <a href="#<%= group.key %>" class="<%= index === 0 ? 'is-active' : '' %>"><span><%= group.icon %></span><%= group.label %></a>
+    <% }) %>
+    <a class="settings__site" href="/" target="_blank" rel="noopener">Voir le site ↗</a>
+  </nav>
+
+  <form class="admin-form" method="post" action="/admin/settings" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+
+    <% groups.forEach(group => { %>
+      <section class="panel" id="<%= group.key %>">
+        <header class="panel__head">
+          <h2 class="panel__title"><%= group.icon %> <%= group.label %></h2>
+        </header>
+
+        <div class="field-grid">
+          <% group.fields.forEach(field => { %>
+            <% const value = values[field.key] ?? ''; %>
+
+            <% if (field.type === 'color') { %>
+              <label class="field field--color">
+                <span><%= field.label %></span>
+                <span class="color-input">
+                  <input type="color" name="<%= field.key %>" value="<%= value %>">
+                  <code><%= value %></code>
+                </span>
+              </label>
+
+            <% } else if (field.type === 'select') { %>
+              <label class="field">
+                <span><%= field.label %></span>
+                <select name="<%= field.key %>">
+                  <% field.options.forEach(option => { %>
+                    <option value="<%= option %>" <%= value === option ? 'selected' : '' %>><%= option %></option>
+                  <% }) %>
+                </select>
+                <% if (field.hint) { %><small class="hint"><%= field.hint %></small><% } %>
+              </label>
+
+            <% } else if (field.type === 'textarea') { %>
+              <label class="field field--wide">
+                <span><%= field.label %></span>
+                <textarea name="<%= field.key %>" rows="<%= field.rows || 4 %>"><%= value %></textarea>
+                <% if (field.hint) { %><small class="hint"><%= field.hint %></small><% } %>
+              </label>
+
+            <% } else if (field.type === 'image' || field.type === 'file') { %>
+              <div class="field field--wide">
+                <span><%= field.label %></span>
+                <div class="media-input">
+                  <div class="media-input__preview" data-preview-for="<%= field.key %>">
+                    <% if (value) { %>
+                      <% if (field.type === 'image') { %>
+                        <img src="<%= imageUrl(value) %>" alt="">
+                      <% } else { %>
+                        <span class="file-chip"><%= value %></span>
+                      <% } %>
+                    <% } else { %>
+                      <span class="muted">Aucun fichier</span>
+                    <% } %>
+                  </div>
+                  <input type="hidden" name="<%= field.key %>" value="<%= value %>" data-media-value="<%= field.key %>">
+                  <div class="media-input__actions">
+                    <% if (field.type === 'image') { %>
+                      <button class="btn btn--tiny" type="button" data-open-media="<%= field.key %>">Médiathèque</button>
+                    <% } %>
+                    <label class="btn btn--tiny file-label">
+                      Téléverser
+                      <input type="file" name="upload__<%= field.key %>" accept="<%= field.type === 'image' ? 'image/*' : 'image/*,application/pdf' %>">
+                    </label>
+                    <button class="btn btn--tiny btn--danger" type="button" data-clear-media="<%= field.key %>">Retirer</button>
+                  </div>
+                </div>
+                <% if (field.hint) { %><small class="hint"><%= field.hint %></small><% } %>
+              </div>
+
+            <% } else { %>
+              <label class="field <%= field.type === 'textarea' ? 'field--wide' : '' %>">
+                <span><%= field.label %></span>
+                <input type="<%= field.type === 'url' ? 'text' : field.type %>" name="<%= field.key %>" value="<%= value %>">
+                <% if (field.hint) { %><small class="hint"><%= field.hint %></small><% } %>
+              </label>
+            <% } %>
+          <% }) %>
+        </div>
+      </section>
+    <% }) %>
+
+    <div class="sticky-save">
+      <p class="muted">Les modifications sont appliquées immédiatement sur le site public.</p>
+      <button class="btn btn--primary" type="submit">Enregistrer les réglages</button>
+    </div>
+  </form>
+</div>
+
+<%- include('shell-end') %>

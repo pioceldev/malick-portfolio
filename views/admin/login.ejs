@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Connexion — Administration</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="auth-body">
+  <div class="auth">
+    <section class="auth__panel">
+      <p class="auth__kicker">Espace privé</p>
+      <h1 class="auth__title">Connexion<br><em>administrateur</em></h1>
+      <p class="auth__text">Ce panneau permet de modifier l’intégralité du portfolio : identité, projets, compétences, couleurs et messages reçus.</p>
+      <a class="auth__back" href="/">← Retour au site</a>
+    </section>
+
+    <section class="auth__form">
+      <h2>Accéder au tableau de bord</h2>
+      <% if (error) { %><div class="alert alert--error" role="alert"><%= error %></div><% } %>
+
+      <form method="post" action="/admin/login" class="admin-form">
+        <input type="hidden" name="next" value="<%= next || '' %>">
+        <label class="field">
+          <span>Adresse e-mail</span>
+          <input type="email" name="email" value="<%= email %>" required autocomplete="username" autofocus>
+        </label>
+        <label class="field">
+          <span>Mot de passe</span>
+          <input type="password" name="password" required autocomplete="current-password">
+        </label>
+        <button class="btn btn--primary btn--block" type="submit">Se connecter</button>
+      </form>
+      <p class="auth__hint">Accès protégé — 6 tentatives maximum toutes les 15 minutes.</p>
+    </section>
+  </div>
+</body>
+</html>

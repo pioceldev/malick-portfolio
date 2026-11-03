@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= pageTitle || settings.site_name %></title>
+  <meta name="description" content="<%= (typeof metaDescription !== 'undefined' && metaDescription) ? metaDescription : settings.meta_description %>">
+  <% if (settings.keywords) { %><meta name="keywords" content="<%= settings.keywords %>"><% } %>
+  <meta name="author" content="<%= settings.full_name || settings.display_name %>">
+  <meta name="theme-color" content="<%= settings.ink_color %>">
+  <meta name="robots" content="index, follow">
+  <% const base = (settings.canonical_url || '').replace(/\/$/, ''); %>
+  <% if (base) { %><link rel="canonical" href="<%= base %><%= (typeof canonicalPath !== 'undefined' ? canonicalPath : '/') %>"><% } %>
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="<%= settings.site_name %>">
+  <meta property="og:title" content="<%= pageTitle || settings.site_name %>">
+  <meta property="og:description" content="<%= (typeof metaDescription !== 'undefined' && metaDescription) ? metaDescription : settings.meta_description %>">
+  <% if (base) { %><meta property="og:url" content="<%= base %><%= (typeof canonicalPath !== 'undefined' ? canonicalPath : '/') %>"><% } %>
+  <% const share = (typeof ogImage !== 'undefined' && ogImage) ? ogImage : (settings.og_image ? imageUrl(settings.og_image) : ''); %>
+  <% if (share) { %><meta property="og:image" content="<%= share.startsWith('http') ? share : (base || '') + share %>"><% } %>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= pageTitle || settings.site_name %>">
+  <meta name="twitter:description" content="<%= (typeof metaDescription !== 'undefined' && metaDescription) ? metaDescription : settings.meta_description %>">
+
+  <% if (settings.favicon) { %><link rel="icon" href="<%= imageUrl(settings.favicon) %>"><% } else { %>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230A0A0B'/><text x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23C9F24D' text-anchor='middle'><%= (settings.display_name || 'M').charAt(0) %></text></svg>">
+  <% } %>
+
+  <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/site.css">
+  <script type="application/ld+json">
+    <%- JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: settings.full_name || settings.display_name,
+      jobTitle: settings.role_title,
+      description: settings.meta_description,
+      url: base || undefined,
+      email: settings.email ? "mailto:" + settings.email : undefined,
+      address: settings.location ? { "@type": "PostalAddress", addressLocality: settings.location } : undefined,
+      sameAs: Object.entries({
+        GitHub: settings.github, LinkedIn: settings.linkedin, X: settings.x,
+        Dribbble: settings.dribbble, Behance: settings.behance,
+        Instagram: settings.instagram, Facebook: settings.facebook, YouTube: settings.youtube
+      }).filter(([, v]) => v).map(([, v]) => v)
+    }) %>
+  </script>
+</head>
+<body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>" style="
+  --accent: <%= settings.accent_color %>;
+  --ink: <%= settings.ink_color %>;
+  --surface: <%= settings.surface_color %>;
+  --text: <%= settings.text_color %>;
+  --muted: <%= settings.muted_color %>;
+  --font-display: '<%= settings.font_display %>', Georgia, serif;
+  --font-body: '<%= settings.font_body %>', system-ui, sans-serif;
+  --motion: <%= settings.motion === 'désactivées' ? 'off' : 'on' %>;
+">
+<a class="skip-link" href="#main">Aller au contenu</a>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span><span class="cursor__label"></span></div>
+<div class="scroll-progress" aria-hidden="true"><span></span></div>

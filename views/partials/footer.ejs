@@ -1,0 +1,37 @@
+<footer class="footer" id="footer">
+  <div class="footer__top">
+    <div class="footer__identity">
+      <p class="footer__kicker"><%= settings.role_title %></p>
+      <p class="footer__name"><%= settings.pro_name || settings.display_name %></p>
+      <% if (settings.footer_note) { %><p class="footer__note"><%= settings.footer_note %></p><% } %>
+    </div>
+
+    <div class="footer__cols">
+      <div class="footer__col">
+        <p class="footer__label">Navigation</p>
+        <% nav.forEach(item => { %><a href="<%= item.href %>"><%= item.label %></a><% }) %>
+      </div>
+      <div class="footer__col">
+        <p class="footer__label">Contact</p>
+        <% if (settings.email) { %><a href="mailto:<%= settings.email %>"><%= settings.email %></a><% } %>
+        <% if (settings.phone) { %><a href="tel:<%= settings.phone.replace(/\s/g, '') %>"><%= settings.phone %></a><% } %>
+        <% if (settings.location) { %><span><%= settings.location %></span><% } %>
+      </div>
+      <div class="footer__col">
+        <p class="footer__label">Réseaux</p>
+        <% if (socials.length === 0) { %><span class="footer__muted">À compléter</span><% } %>
+        <% socials.forEach(social => { %>
+          <a href="<%= social.url %>" target="_blank" rel="noopener noreferrer"><%= social.label %></a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p><%= (settings.copyright || '').replace('{year}', String(new Date().getFullYear())) %></p>
+    <a class="footer__up" href="#top" data-magnetic>Retour en haut <span aria-hidden="true">↑</span></a>
+  </div>
+</footer>
+<script src="/js/site.js" defer></script>
+</body>
+</html>

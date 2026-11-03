@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Création du compte — Administration</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="auth-body">
+  <div class="auth">
+    <section class="auth__panel">
+      <p class="auth__kicker">Première configuration</p>
+      <h1 class="auth__title">Créez votre<br><em>compte admin</em></h1>
+      <p class="auth__text">Aucun compte n’existe encore. Cette page disparaîtra automatiquement dès que votre compte sera créé.</p>
+      <a class="auth__back" href="/">← Retour au site</a>
+    </section>
+
+    <section class="auth__form">
+      <h2>Votre compte</h2>
+      <% if (error) { %><div class="alert alert--error" role="alert"><%= error %></div><% } %>
+
+      <form method="post" action="/admin/setup" class="admin-form">
+        <label class="field">
+          <span>Nom</span>
+          <input type="text" name="name" value="<%= values.name || '' %>" required autocomplete="name">
+        </label>
+        <label class="field">
+          <span>Adresse e-mail</span>
+          <input type="email" name="email" value="<%= values.email || '' %>" required autocomplete="username">
+        </label>
+        <label class="field">
+          <span>Mot de passe (10 caractères minimum)</span>
+          <input type="password" name="password" required minlength="10" autocomplete="new-password">
+        </label>
+        <label class="field">
+          <span>Confirmer le mot de passe</span>
+          <input type="password" name="confirm" required minlength="10" autocomplete="new-password">
+        </label>
+        <button class="btn btn--primary btn--block" type="submit">Créer le compte</button>
+      </form>
+      <p class="auth__hint">Le mot de passe est haché avec scrypt : il n’est jamais stocké en clair.</p>
+    </section>
+  </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title><%= title %> — Administration</title>
+  <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+<a class="skip-link" href="#admin-main">Aller au contenu</a>
+
+<button class="admin-burger" type="button" id="admin-burger" aria-label="Ouvrir le menu d’administration" aria-expanded="false">
+  <span></span><span></span>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <a class="sidebar__brand" href="/admin">
+    <span class="sidebar__mark">◈</span>
+    <span>
+      <strong>Administration</strong>
+      <small><%= siteSettings.site_name %></small>
+    </span>
+  </a>
+
+  <nav class="sidebar__nav" aria-label="Navigation administration">
+    <p class="sidebar__label">Pilotage</p>
+    <a href="/admin" class="<%= currentPath === '/' ? 'is-active' : '' %>"><span>Tableau de bord</span></a>
+    <a href="/admin/messages" class="<%= currentPath.startsWith('/admin/messages') ? 'is-active' : '' %>">
+      <span>Messages</span>
+      <% if (typeof unreadCount !== 'undefined' && unreadCount > 0) { %><em class="badge"><%= unreadCount %></em><% } %>
+    </a>
+    <a href="/admin/media" class="<%= currentPath.startsWith('/admin/media') ? 'is-active' : '' %>"><span>Médiathèque</span></a>
+
+    <p class="sidebar__label">Contenu</p>
+    <% ['projects','skills','experiences','services','process','testimonials'].forEach(key => { %>
+      <% const item = entities[key]; if (!item) return; %>
+      <a href="/admin/<%= key %>" class="<%= currentPath.startsWith('/admin/' + key) ? 'is-active' : '' %>">
+        <span><%= item.icon %> <%= item.label %></span>
+      </a>
+    <% }) %>
+
+    <p class="sidebar__label">Site</p>
+    <a href="/admin/settings" class="<%= currentPath.startsWith('/admin/settings') ? 'is-active' : '' %>"><span>Réglages</span></a>
+    <a href="/admin/navigation" class="<%= currentPath.startsWith('/admin/navigation') ? 'is-active' : '' %>"><span>Navigation</span></a>
+    <a href="/admin/account" class="<%= currentPath.startsWith('/admin/account') ? 'is-active' : '' %>"><span>Mon compte</span></a>
+  </nav>
+
+  <div class="sidebar__foot">
+    <a class="sidebar__view" href="/" target="_blank" rel="noopener">Voir le site ↗</a>
+    <form action="/admin/logout" method="post">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <button type="submit" class="sidebar__logout">Déconnexion</button>
+    </form>
+  </div>
+</aside>
+
+<div class="admin-main">
+  <header class="admin-topbar">
+    <div>
+      <p class="admin-topbar__kicker">Administration</p>
+      <h1><%= title %></h1>
+    </div>
+    <div class="admin-topbar__user">
+      <span class="avatar"><%= (admin && admin.name ? admin.name : 'A').charAt(0).toUpperCase() %></span>
+      <span>
+        <strong><%= admin ? admin.name : '' %></strong>
+        <small><%= admin ? admin.email : '' %></small>
+      </span>
+    </div>
+  </header>
+
+  <main class="admin-content" id="admin-main">
