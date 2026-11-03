@@ -1,0 +1,29 @@
+# Portfolio — version PHP (hébergement mutualisé)
+
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Pages de projet : /projets/mon-projet → projet.php?slug=mon-projet
+  RewriteRule ^projets/([A-Za-z0-9_-]+)/?$ projet.php?slug=$1 [L,QSA]
+
+  # Fichiers SEO dynamiques
+  RewriteRule ^robots\.txt$ robots.php [L]
+  RewriteRule ^sitemap\.xml$ sitemap.php [L]
+</IfModule>
+
+ErrorDocument 404 /404.php
+
+# Fichiers de configuration et de schéma jamais servis
+<FilesMatch "\.(sql|md|log|ini|local\.php)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>

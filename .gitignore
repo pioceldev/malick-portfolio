@@ -1,7 +1,13 @@
-node_modules/
-data/
-public/uploads/*
-!public/uploads/.gitkeep
-.env
+# Dépendances et artefacts
 *.log
 .DS_Store
+
+# Configuration locale (identifiants MySQL, clés Brevo)
+php/inc/config.local.php
+
+# Médias importés : servis depuis le disque de l'hébergeur, pas versionnés
+php/uploads/*
+!php/uploads/.gitkeep
+
+# Ancienne base SQLite, conservée comme archive locale
+data/
