@@ -140,7 +140,7 @@ function current_path(): string
     return $path;
 }
 
-function redirect(string $url): never
+function redirect(string $url): void
 {
     header('Location: ' . $url, true, 302);
     exit;
